@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from helpers import get_image_path
 from instabot import Bot
 
 
@@ -14,9 +15,10 @@ def main():
     images_list = os.listdir('images')
 
     for image in images_list:
-        image_path = 'images/{}'.format(image)
+        image_path = get_image_path(image)
         bot.upload_photo(image_path)
         
 
 if __name__ == '__main__':
     main()
+    

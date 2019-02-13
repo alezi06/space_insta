@@ -1,9 +1,7 @@
 import os
 import requests
+from helpers import get_image_type, get_image_path
 
-
-def get_image_type(link):
-    return link.split('.')[-1]
 
 def download_image(image_id):
     url = 'http://hubblesite.org/api/v3/image/{}'.format(image_id)
@@ -11,7 +9,8 @@ def download_image(image_id):
     response = requests.get(url).json()
     image_link = response['image_files'][-1]['file_url']
 
-    file_path = './images/{}.{}'.format(image_id, get_image_type(image_link))
+    image_type = get_image_type(image_link)
+    file_path = get_image_path('{}.{}'.format(image_id, image_type))
     response = requests.get(image_link)
 
     with open(file_path, 'wb') as file:
@@ -22,7 +21,7 @@ def fetch_hubble_collection_images():
     url = 'http://hubblesite.org/api/v3/images?page=all&collection_name=spacecraft'
     response = requests.get(url)
 
-    os.makedirs('./images/', exist_ok=True)
+    os.makedirs(get_image_path(), exist_ok=True)
 
     for image in response.json():
         download_image(image['id'])

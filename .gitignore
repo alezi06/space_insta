@@ -1,6 +1,3 @@
 venv
 images
 .env
-*.txt
-*.log
-*.checkpoint

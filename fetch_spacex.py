@@ -1,5 +1,6 @@
 import os
 import requests
+from helpers import get_image_path
 
 
 def fetch_spacex_last_launch():
@@ -8,10 +9,10 @@ def fetch_spacex_last_launch():
     response = requests.get(url).json()
     image_links_list = response['links']['flickr_images']
 
-    os.makedirs('./images/', exist_ok=True)
+    os.makedirs(get_image_path(), exist_ok=True)
 
     for image_number, image_link in enumerate(image_links_list, 1):
-        file_path = './images/spacex{}.jpg'.format(image_number)
+        file_path = get_image_path('spacex{}.jpg'.format(image_number))
         response = requests.get(image_link)
 
         with open(file_path, 'wb') as file:
